@@ -21,7 +21,7 @@ public class UserAccountCreationDao {
 		
 		int accNum = 0;
 		boolean result = false;
-		String serverIp = "127.0.0.1";
+		String serverIp = "10.0.2.2";
 	    String keyspace = "sample";
 	    Cluster cluster = Cluster.builder().addContactPoints(serverIp).build();  
 	    Session session = cluster.connect(keyspace);
@@ -32,7 +32,7 @@ public class UserAccountCreationDao {
 	       accNum  = row.getInt("User_ID");
 	             }
 	    accNum = accNum + 1;
-	    String insertQuery = "insert into users (User_ID,FirstName,LastName,dateofbirth,EmailAddress,city,ZIPCode,State) values ("+accNum+", '"+userAccount.getFirstName()+"','"+userAccount.getLastName()+"','"+userAccount.getDateOfBirth()+"', '"+userAccount.getEmail()+"', '"+userAccount.getAddress().getCity()+"',"+userAccount.getAddress().getZipCode()+", '"+userAccount.getAddress().getState()+"');";
+	    String insertQuery = "insert into users (User_ID,FirstName,LastName,dateofbirth,email,city,ZIPCode,State) values ("+accNum+", '"+userAccount.getFirstName()+"','"+userAccount.getLastName()+"','"+userAccount.getDateOfBirth()+"', '"+userAccount.getEmail()+"', '"+userAccount.getAddress().getCity()+"',"+userAccount.getAddress().getZipCode()+", '"+userAccount.getAddress().getState()+"');";
 	    log.info("insertQuery.."+insertQuery);
 	    ResultSet results  = session.execute(insertQuery);
 	    result =  results.wasApplied();
