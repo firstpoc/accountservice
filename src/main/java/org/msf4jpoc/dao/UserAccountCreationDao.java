@@ -2,11 +2,16 @@
  * 
  */
 package org.msf4jpoc.dao;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 import org.msf4jpoc.bean.UserAccount;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Cluster; 
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
@@ -17,12 +22,28 @@ import com.datastax.driver.core.Session;
 public class UserAccountCreationDao {
 	private static final Logger log = LoggerFactory.getLogger(UserAccountCreationDao.class);
 	
-	public String insertUserAccount(UserAccount userAccount){
+	public String insertUserAccount(UserAccount userAccount) {
 		
+		Properties prop = new Properties();
 		int accNum = 0;
 		boolean result = false;
-		String serverIp = "10.0.2.2";
-	    String keyspace = "sample";
+		try {
+			System.out.println("reading ............");
+			InputStream inputStream = 
+				    getClass().getClassLoader().getResourceAsStream("env.properties");
+					//Thread.currentThread().getContextClassLoader().getResourceAsStream("env.properties");
+		
+		// load a properties file
+			prop.load(inputStream);
+
+		// get the property value and print it out
+		System.out.println(prop.getProperty("Cassandra_IP"));
+		System.out.println(prop.getProperty("KEYSPACE"));
+		
+
+		
+		String serverIp = prop.getProperty("Cassandra_IP");
+	    String keyspace = prop.getProperty("KEYSPACE");
 	    Cluster cluster = Cluster.builder().addContactPoints(serverIp).build();  
 	    Session session = cluster.connect(keyspace);
 	    
@@ -37,6 +58,14 @@ public class UserAccountCreationDao {
 	    ResultSet results  = session.execute(insertQuery);
 	    result =  results.wasApplied();
 	   
+		
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return result ? "Account created successfully": "Account not created";
 	}
 
