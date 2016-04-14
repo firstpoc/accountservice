@@ -2,10 +2,10 @@
 FROM java
 
 
-WORKDIR /opt
+WORKDIR /usr/local
 
-COPY /accountservice-1.0.0.jar /opt/accountservice-1.0.0.jar
+COPY /accountservice-1.0.0.jar /usr/local/accountservice-1.0.0.jar
 
 EXPOSE 8080
 
-ENTRYPOINT java -jar /opt/accountservice-1.0.0.jar
+ENTRYPOINT java -cp /usr/local/accountservice-1.0.0.jar:/usr/local/config org.msf4jpoc.service.Application
