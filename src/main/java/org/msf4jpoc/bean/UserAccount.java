@@ -16,7 +16,7 @@ import org.codehaus.jackson.annotate.JsonSetter;
 
 public class UserAccount {
 
-	@JsonProperty("FirstName") 
+	@JsonProperty("FirstName")
 	private String firstName;
 	
 	@JsonProperty("LastName")
